@@ -1,8 +1,11 @@
 package hello.hellospring.repository;
 
 import hello.hellospring.domain.Member;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
+
+//레포지토리도 서비스와 마찬가지이유로 어노테이션 필요
 
 public class MemoryMemberRepository implements MemberRepository{
     //실무에서는 동시성 문제가 발생할 수 있어 공유되는 변수 일떄는 콘크로 해시맵??을 써야함 
