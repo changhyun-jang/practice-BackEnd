@@ -3,7 +3,6 @@ package basic.core.order;
 import basic.core.discount.DiscountPolicy;
 import basic.core.member.Member;
 import basic.core.member.MemberRepository;
-import basic.core.member.MemoryMemberRepository;
 
 public class OrderServiceImpl implements OrderService {
     private final MemberRepository memberRepository;
