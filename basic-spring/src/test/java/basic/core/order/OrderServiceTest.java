@@ -1,10 +1,8 @@
 package basic.core.order;
 
 import basic.core.AppConfig;
-import basic.core.member.Grade;
-import basic.core.member.Member;
-import basic.core.member.MemberService;
-import basic.core.member.MemberServiceImpl;
+import basic.core.discount.FixDiscountPolicy;
+import basic.core.member.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
