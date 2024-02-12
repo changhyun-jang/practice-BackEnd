@@ -5,10 +5,11 @@ import basic.core.member.Member;
 import basic.core.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 //final이 붙은애들로 생성자 생성
 public class OrderServiceImpl implements OrderService {
     
@@ -23,6 +24,15 @@ public class OrderServiceImpl implements OrderService {
 
         return new Order(memberId, itemName, itemPrice, discountPrice);
     }
+
+    // 생성자 주입
+    // new OrderServiceImple(membreRepository, discountPolicy);
+    @Autowired
+    public OrderServiceImpl(MemberRepository memberRepository,DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
+
 
     //테스트용
     public MemberRepository getMemberRepository() {
@@ -39,12 +49,6 @@ public class OrderServiceImpl implements OrderService {
 //        this.discountPolicy = discountPolicy;
 //    }
 
-    // 생성자 주입
-    // new OrderServiceImple(membreRepository, discountPolicy);
-//    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-//        this.memberRepository = memberRepository;
-//        this.discountPolicy = discountPolicy;
-//    }
 
     //OCP원칙 위반
     //DIP원칙 위반
