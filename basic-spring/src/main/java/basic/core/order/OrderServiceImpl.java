@@ -1,5 +1,6 @@
 package basic.core.order;
 
+import basic.core.annotation.MainDiscountPolicy;
 import basic.core.discount.DiscountPolicy;
 import basic.core.member.Member;
 import basic.core.member.MemberRepository;
@@ -28,7 +29,7 @@ public class OrderServiceImpl implements OrderService {
     // 생성자 주입
     // new OrderServiceImple(membreRepository, discountPolicy);
     @Autowired
-    public OrderServiceImpl(MemberRepository memberRepository,DiscountPolicy discountPolicy) {
+    public OrderServiceImpl(MemberRepository memberRepository,@MainDiscountPolicy DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }
