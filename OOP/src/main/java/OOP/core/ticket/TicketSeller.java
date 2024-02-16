@@ -22,6 +22,8 @@ public class TicketSeller {
 //            ticketOffice.plusAmount(ticket.getFee());
 //            audience.getBag().setTicket(ticket);
 //        }
-        ticketOffice.plusAmount(audience.buy(ticketOffice.getTicket()));
+//        4차코드 - TicketOffice의 캡슐화
+//        ticketOffice.plusAmount(audience.buy(ticketOffice.getTicket()));
+        ticketOffice.sellTicketTo(audience);
     }
 }

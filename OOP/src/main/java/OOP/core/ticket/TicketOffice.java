@@ -24,4 +24,9 @@ public class TicketOffice {
     public void plusAmount(Long amount) {
         this.amount += amount;
     }
+
+    //4차코드 - TicketOffice의 캡슐화
+    public void sellTicketTo(Audience audience){
+        plusAmount(audience.buy(getTicket()));
+    }
 }
