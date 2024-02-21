@@ -1,4 +1,4 @@
-package OOP.core.movie;
+package OOP.core.responsibility.movie;
 
 import java.util.ArrayList;
 import java.util.Arrays;

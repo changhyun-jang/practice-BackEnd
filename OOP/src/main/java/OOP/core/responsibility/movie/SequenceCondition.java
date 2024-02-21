@@ -1,4 +1,4 @@
-package OOP.core.movie;
+package OOP.core.responsibility.movie;
 
 public class SequenceCondition implements DiscountCondition{
     private int sequence;
