@@ -1,6 +1,5 @@
 package OOP.core.data.movie;
 
-import OOP.core.responsibility.movie.DiscountCondition;
 import OOP.core.responsibility.movie.Money;
 
 import java.time.Duration;
