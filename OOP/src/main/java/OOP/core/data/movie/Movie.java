@@ -16,45 +16,45 @@ public class Movie {
     private Money discountAmount;
     private double discountPercent;
 
-    public Money getFee() {
-        return fee;
-    }
+//    public Money getFee() {
+//        return fee;
+//    }
 
-    public void setFee(Money fee) {
-        this.fee = fee;
-    }
-
-    public List<DiscountCondition> getDiscountConditions() {
-        return discountConditions;
-    }
-
-    public void setDiscountConditions(List<DiscountCondition> discountConditions) {
-        this.discountConditions = discountConditions;
-    }
+//    public void setFee(Money fee) {
+//        this.fee = fee;
+//    }
+//
+//    public List<DiscountCondition> getDiscountConditions() {
+//        return discountConditions;
+//    }
+//
+//    public void setDiscountConditions(List<DiscountCondition> discountConditions) {
+//        this.discountConditions = discountConditions;
+//    }
 
     public MovieType getMovieType() {
         return movieType;
     }
 
-    public void setMovieType(MovieType movieType) {
-        this.movieType = movieType;
-    }
-
-    public Money getDiscountAmount() {
-        return discountAmount;
-    }
-
-    public void setDiscountAmount(Money discountAmount) {
-        this.discountAmount = discountAmount;
-    }
-
-    public double getDiscountPercent() {
-        return discountPercent;
-    }
-
-    public void setDiscountPercent(double discountPercent) {
-        this.discountPercent = discountPercent;
-    }
+//    public void setMovieType(MovieType movieType) {
+//        this.movieType = movieType;
+//    }
+//
+//    public Money getDiscountAmount() {
+//        return discountAmount;
+//    }
+//
+//    public void setDiscountAmount(Money discountAmount) {
+//        this.discountAmount = discountAmount;
+//    }
+//
+//    public double getDiscountPercent() {
+//        return discountPercent;
+//    }
+//
+//    public void setDiscountPercent(double discountPercent) {
+//        this.discountPercent = discountPercent;
+//    }
 
     //할인 정책의 타입을 반환하는 메서드와 정책별로 요금을 계산하는 메서드 필요
     public Money calculateAmountDiscountedFee() {

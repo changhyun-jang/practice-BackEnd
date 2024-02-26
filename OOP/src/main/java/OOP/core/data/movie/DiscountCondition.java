@@ -15,22 +15,22 @@ public class DiscountCondition {
     public DiscountConditionType getType() {
         return type;
     }
-
-    public int getSequence() {
-        return sequence;
-    }
-
-    public DayOfWeek getDayOfWeek() {
-        return dayOfWeek;
-    }
-
-    public LocalTime getStartTime() {
-        return startTime;
-    }
-
-    public LocalTime getEndTime() {
-        return endTime;
-    }
+//
+//    public int getSequence() {
+//        return sequence;
+//    }
+//
+//    public DayOfWeek getDayOfWeek() {
+//        return dayOfWeek;
+//    }
+//
+//    public LocalTime getStartTime() {
+//        return startTime;
+//    }
+//
+//    public LocalTime getEndTime() {
+//        return endTime;
+//    }
 
     //책임 갖게 하기
     //type 값을 이용해 할인 조건 타입에 맞는 적절한 메서드가 호출이 되었는지 판단
