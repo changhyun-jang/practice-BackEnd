@@ -17,21 +17,21 @@ public class Screening {
         this.movie = movie;
     }
 
-    public int getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(int sequence) {
-        this.sequence = sequence;
-    }
-
-    public LocalDateTime getWhenScreened() {
-        return whenScreened;
-    }
-
-    public void setWhenScreened(LocalDateTime whenScreened) {
-        this.whenScreened = whenScreened;
-    }
+//    public int getSequence() {
+//        return sequence;
+//    }
+//
+//    public void setSequence(int sequence) {
+//        this.sequence = sequence;
+//    }
+//
+//    public LocalDateTime getWhenScreened() {
+//        return whenScreened;
+//    }
+//
+//    public void setWhenScreened(LocalDateTime whenScreened) {
+//        this.whenScreened = whenScreened;
+//    }
 
     public Screening(Movie movie, int sequence, LocalDateTime whenScreened) {
         this.movie = movie;
