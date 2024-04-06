@@ -4,6 +4,8 @@ import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceUnit;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -313,5 +315,45 @@ public class QuerydslBasicTest {
         for (Tuple tuple : fetch) {
             System.out.println("tuple = " + tuple);
         }
+    }
+    /**
+     * 패치 조인이란
+     * sql을 활용하여 연관된 entity를 sql한방에 쿼리로 가져오는 방법
+     * 성능 최적화에 자주 사용 함
+     */
+    @PersistenceUnit
+    EntityManagerFactory emf;
+
+    @Test
+    public void fetchJoinNo(){
+        //영속성 context 날리기
+        em.flush();
+        em.clear();
+
+        //현재 lazy로 설정되어 DB에서 조회시 member만 조회되고 team은 조회안됨
+        Member findMember = queryFactory
+                .selectFrom(member)
+                .where(member.username.eq("member1"))
+                .fetchOne();
+        //로딩이된 entity인지 초기화가 안된 entity인지 확인
+        boolean loaded = emf.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
+        assertThat(loaded).as("패치 조인 미적용").isFalse();
+    }
+    @Test
+    public void fetchJoinUse(){
+        //영속성 context 날리기
+        em.flush();
+        em.clear();
+
+        //현재 lazy로 설정되어 DB에서 조회시 member만 조회되고 team은 조회안됨
+        Member findMember = queryFactory
+                .selectFrom(member)
+                .join(member.team, team).fetchJoin()
+                .where(member.username.eq("member1"))
+                .fetchOne();
+
+        //로딩이된 entity인지 초기화가 안된 entity인지 확인
+        boolean loaded = emf.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
+        assertThat(loaded).as("패치 조인 미적용").isTrue();
     }
 }
