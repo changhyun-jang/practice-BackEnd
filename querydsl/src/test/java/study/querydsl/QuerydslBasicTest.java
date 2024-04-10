@@ -2,6 +2,7 @@ package study.querydsl;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -19,6 +20,7 @@ import study.querydsl.entity.Team;
 
 import java.util.List;
 
+import static com.querydsl.jpa.JPAExpressions.*;
 import static org.assertj.core.api.Assertions.*;
 import static study.querydsl.entity.QMember.*;
 import static study.querydsl.entity.QTeam.*;
@@ -278,13 +280,14 @@ public class QuerydslBasicTest {
                 .extracting("username")
                 .containsExactly("teamA", "teamB");
     }
+
     /**
      * 회원과 팀을 조인하면서, 팀 이름이 teamA인 팀만 조인, 회원은 모두 조회
      * JPQL: select m, t from Member m left join m.team t on t.name = 'teamA'
      * 내부 조인이면 익숙한 where로 해결하고 외부 조인이 필요한 경우 on에 eq를 통해 비교
      */
     @Test
-    public void join_on_filtering(){
+    public void join_on_filtering() {
         List<Tuple> result = queryFactory
                 .select(member, team)
                 .from(member)
@@ -293,9 +296,11 @@ public class QuerydslBasicTest {
 //                .where(team.name.eq("teamA"))
                 .fetch();
         for (Tuple tuple : result) {
-            System.out.println("tuple = " + tuple);;
+            System.out.println("tuple = " + tuple);
+            ;
         }
     }
+
     /**
      * 연관 관계가 없는 엔티티 외부 조인
      * 회원의 이름이 팀 이름과 같은 대상을 외부 조인
@@ -316,6 +321,7 @@ public class QuerydslBasicTest {
             System.out.println("tuple = " + tuple);
         }
     }
+
     /**
      * 패치 조인이란
      * sql을 활용하여 연관된 entity를 sql한방에 쿼리로 가져오는 방법
@@ -325,7 +331,7 @@ public class QuerydslBasicTest {
     EntityManagerFactory emf;
 
     @Test
-    public void fetchJoinNo(){
+    public void fetchJoinNo() {
         //영속성 context 날리기
         em.flush();
         em.clear();
@@ -339,8 +345,9 @@ public class QuerydslBasicTest {
         boolean loaded = emf.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
         assertThat(loaded).as("패치 조인 미적용").isFalse();
     }
+
     @Test
-    public void fetchJoinUse(){
+    public void fetchJoinUse() {
         //영속성 context 날리기
         em.flush();
         em.clear();
@@ -355,5 +362,101 @@ public class QuerydslBasicTest {
         //로딩이된 entity인지 초기화가 안된 entity인지 확인
         boolean loaded = emf.getPersistenceUnitUtil().isLoaded(findMember.getTeam());
         assertThat(loaded).as("패치 조인 미적용").isTrue();
+    }
+
+    /**
+     * 나이가 가장 많은 회원 조회
+     */
+    @Test
+    public void subQuery() {
+
+        QMember memberSub = new QMember("memberSub");
+
+        List<Member> result = queryFactory
+                .selectFrom(member)
+                .where(member.age.eq(
+                        select(memberSub.age.max())
+                                .from(memberSub)
+                ))
+                .fetch();
+
+        assertThat(result).extracting("age")
+                .containsExactly(40);
+    }
+
+    /**
+     * 나이가 퍙균 이상인 회원 조회
+     */
+    @Test
+    public void subQueryGoe() {
+
+        QMember memberSub = new QMember("memberSub");
+
+        List<Member> result = queryFactory
+                .selectFrom(member)
+                .where(member.age.goe(
+                        select(memberSub.age.avg())
+                                .from(memberSub)
+                ))
+                .fetch();
+
+        assertThat(result).extracting("age")
+                .containsExactly(30, 40);
+    }
+
+    /**
+     * 나이가 가장 많은 회원 조회
+     */
+    @Test
+    public void subQueryIn() {
+
+        QMember memberSub = new QMember("memberSub");
+
+        List<Member> result = queryFactory
+                .selectFrom(member)
+                .where(member.age.in(
+                        select(memberSub.age)
+                                .from(memberSub)
+                                .where(memberSub.age.gt(10))
+                ))
+                .fetch();
+
+        assertThat(result).extracting("age")
+                .containsExactly(20, 30, 40);
+    }
+
+    /**
+     * jpa에서의 sub쿼리 한계
+     * jpa 서브쿼리는 from절 서브쿼리가 안됌.
+     * 쿼리dsl도 안됌.
+     * hibernate구현체를 사용하면 select절 서브쿼리는됨.
+     *
+     * 해결방안.
+     * 1. 서브쿼리는 join으로 변경
+     * 2. 애플리케이션에서 쿼리를 2번 분리해서 실행
+     * 3. nativeSQL을 사용한다.
+     *
+     * 꼭 쿼리를 한번에 하는 것 보다 여러번 사용하는게 좋을 수 도 있음
+     * sql AntiPatterns : 복잡한 수천줄의 쿼리는 쪼개서 호출하면
+     * 분량을 줄일 수 있을거다 라는 말 ~
+     */
+    @Test
+    public void selectSubQuery() {
+        QMember memberSub = new QMember("memberSub");
+
+        List<Tuple> result = queryFactory
+                .select(member.username,
+                        select(memberSub.age.avg())
+                                .from(memberSub)
+                )
+                .from(member)
+                .fetch();
+
+        for (Tuple tuple : result) {
+            System.out.println("tuple = " + tuple);
+
+        }
+
+
     }
 }
