@@ -433,12 +433,12 @@ public class QuerydslBasicTest {
      * jpa 서브쿼리는 from절 서브쿼리가 안됌.
      * 쿼리dsl도 안됌.
      * hibernate구현체를 사용하면 select절 서브쿼리는됨.
-     *
+     * <p>
      * 해결방안.
      * 1. 서브쿼리는 join으로 변경
      * 2. 애플리케이션에서 쿼리를 2번 분리해서 실행
      * 3. nativeSQL을 사용한다.
-     *
+     * <p>
      * 꼭 쿼리를 한번에 하는 것 보다 여러번 사용하는게 좋을 수 도 있음
      * sql AntiPatterns : 복잡한 수천줄의 쿼리는 쪼개서 호출하면
      * 분량을 줄일 수 있을거다 라는 말 ~
@@ -462,7 +462,7 @@ public class QuerydslBasicTest {
     }
 
     @Test
-    public void basicCase(){
+    public void basicCase() {
         List<String> result = queryFactory
                 .select(member.age
                         .when(10).then("열살")
@@ -478,7 +478,7 @@ public class QuerydslBasicTest {
     }
 
     @Test
-    public void complexCase(){
+    public void complexCase() {
         List<String> result = queryFactory
                 .select(new CaseBuilder()
                         .when(member.age.between(0, 20)).then("0~20살")
@@ -492,7 +492,7 @@ public class QuerydslBasicTest {
     }
 
     @Test
-    public void constant(){
+    public void constant() {
         List<Tuple> result = queryFactory
                 .select(member.username, Expressions.constant("A"))
                 .from(member)
@@ -503,7 +503,7 @@ public class QuerydslBasicTest {
     }
 
     @Test
-    public void concat(){
+    public void concat() {
         //{username}_{age}
         List<String> result = queryFactory
                 .select(member.username.concat("_").concat(member.age.stringValue()))
@@ -513,6 +513,38 @@ public class QuerydslBasicTest {
 
         for (String s : result) {
             System.out.println("s = " + s);
+
+        }
+    }
+
+    @Test
+    public void simpleProjection() {
+        List<String> result = queryFactory
+                .select(member.username)
+                .from(member)
+                .fetch();
+
+        for (String s : result) {
+            System.out.println("s = " + s);
+
+        }
+    }
+
+    @Test
+    public void tupleProjection() {
+        //Tuple을 respository계층에서 사용하는 것은 괜찮으나
+        //서비스 계층에서 사용하는 것은 좋은 설계가 아님
+        //서비스계층에서 사용할때는 dto로 변환해서 사용하는 것 추천
+        List<Tuple> result = queryFactory
+                .select(member.username, member.age)
+                .from(member)
+                .fetch();
+
+        for (Tuple tuple : result) {
+            String username = tuple.get(member.username);
+            System.out.println("username = " + username);
+            Integer age = tuple.get(member.age);
+            System.out.println("age = " + age);
 
         }
     }
