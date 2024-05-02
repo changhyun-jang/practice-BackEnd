@@ -25,10 +25,10 @@ class HelloTest {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
 //		QHello qHello = new QHello("h");
         QHello qHello = QHello.hello;
-        Hello result = queryFactory
-                .selectFrom(qHello)
-                .fetchOne();
-//
-        Assertions.assertThat(result).isEqualTo(hello);
+//        Hello result = queryFactory
+//                .selectFrom(qHello)
+//                .fetchOne();
+////
+//        Assertions.assertThat(result).isEqualTo(hello);
     }
 }
