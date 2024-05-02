@@ -10,8 +10,8 @@ public class UserDto {
     private String name;
     private int age;
 
-    public UserDto(String name, int age) {
-        this.name = name;
+    public UserDto(String username, int age) {
+        this.name = username;
         this.age = age;
     }
 }
